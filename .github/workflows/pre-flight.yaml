@@ -1,0 +1,18 @@
+name: Pre-flight Checks
+on: push
+jobs:
+  pre-flight:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Src
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+      - name: Install NPM Deps
+        run: npm i
+      - name: Lint
+        run: npm run lint
+      - name: Angular Unit Tests
+        run: npm run test -- --watch=false --browsers=ChromeHeadless
+      - name: Angular Project Build
+        run: npm run build
