@@ -10,7 +10,7 @@ CYAN='\033[36m'
 BOLD='\033[1m'
 RESET='\033[0m'
 
-echo -e "${BOLD}${YELLOW}\n*** [ Pre-push Hook Initialized ] ***${RESET}\n"
+echo -e "${BOLD}${YELLOW}\n*** [ Pre-push Hook Initialized - Formatting ] ***${RESET}\n"
 
 echo -e "${MAGENTA}Checking for prettier installation...${RESET}"
 

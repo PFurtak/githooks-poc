@@ -10,7 +10,7 @@ CYAN='\033[36m'
 BOLD='\033[1m'
 RESET='\033[0m'
 
-echo -e "${BOLD}${YELLOW}\n*** [ Pre-push Hook Initialized ] ***${RESET}\n"
+echo -e "${BOLD}${YELLOW}\n*** [ Pre-push Hook Initialized - Linting ] ***${RESET}\n"
 
 echo -e "${MAGENTA}Checking for Angular eslint installation...${RESET}"
 
@@ -45,7 +45,7 @@ fi
 
 echo -e "${MAGENTA}Running 'ng lint --lint-file-patterns' against committed changes...${RESET}\n"
 # Run lint check on committed files only
-ng lint --lint-file-patterns $committed_files
+ng lint --files $committed_files
 lint_status=$?
 
 # If linter found issues, prompt the user
