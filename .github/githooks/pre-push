@@ -1,78 +1,14 @@
 #!/bin/bash
 
 # Color codes
-RED='\033[31m'
 GREEN='\033[32m'
-YELLOW='\033[33m'
-BLUE='\033[34m'
-MAGENTA='\033[35m'
-CYAN='\033[36m'
 BOLD='\033[1m'
 RESET='\033[0m'
 
-echo -e "${BOLD}${YELLOW}\n*** [ Pre-push Hook Initialized ] ***${RESET}\n"
+set -e
 
-echo -e "${MAGENTA}Checking for prettier installation...${RESET}"
+./.github/githooks/scripts/check-formatting
+./.github/githooks/scripts/check-lint
 
-# Check if Prettier is available via npx
-if ! npx --no-install prettier --help > /dev/null 2>&1; then
-  echo -e "${BOLD}${RED}\nPrettier is not installed. Please install it to use this hook.${RESET}\n"
-  exit 1
-fi
-
-echo -e "${MAGENTA}Checking against remote for changed files...${RESET}"
-
-# Find the branch you're pushing to
-remote_branch=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null)
-
-if [ -z "$remote_branch" ]; then
-  echo -e "${BOLD}${YELLOW}\nNo upstream branch found. Is this a new branch?${RESET}"
-  echo -e "${CYAN}\nPushing changes...${RESET}\n"
-  exit 0
-fi
-
-echo -e "${MAGENTA}Checking for committed files...${RESET}"
-
-# Get the list of files that differ between the local branch and the remote branch
-committed_files=$(git diff --name-only "$remote_branch" HEAD | grep -E '\.(js|ts|json|css|html|md)$')
-
-# If no relevant files are found, skip the check
-if [ -z "$committed_files" ]; then
-  echo -e "${BOLD}${YELLOW}No relevant files to check for formatting.${RESET}"
-  echo -e "${CYAN}Pushing changes...${RESET}\n"
-  exit 0
-fi
-
-echo -e "${MAGENTA}Running 'prettier --check' against committed changes...${RESET}\n"
-# Run Prettier check on committed files only
-npx prettier --check $committed_files
-prettier_status=$?
-
-# If Prettier found issues, prompt the user
-if [ $prettier_status -ne 0 ]; then
-  echo -e "\n${BOLD}${RED}Prettier has detected formatting issues.${RESET}\n"
-  echo -e "${YELLOW}Would you like to proceed with the push? (y/n)${RESET}"
-
-  # Read user input and store the result
-  read -p "(y/n)?: " proceed < /dev/tty
-
-   # While loop to ensure valid input
-  while [[ "$proceed" != "y" && "$proceed" != "n" ]]; do
-    echo -e "${YELLOW}Invalid input, please enter 'y' or 'n'.${RESET}"
-    read -p "(y/n)?: " proceed < /dev/tty
-  done
-
-  # If the user says no, abort the push
-  if [[ "$proceed" != "y" ]]; then
-    echo -e "${BOLD}${RED}Push aborted. Please format your code and try again.${RESET}"
-    exit 1
-  else
-    echo -e "${YELLOW}Proceeding with the push despite formatting issues.${RESET}"
-  fi
-else
-  echo -e "${GREEN}Committed files are formatted correctly.${RESET}"
-  echo -e "${CYAN}Pushing changes...${RESET}\n"
-fi
-
-# If everything is fine or user allows, continue with the push
+echo -e "${GREEN}${BOLD}\nAll checks passed, pushing changes...${RESET}"
 exit 0
