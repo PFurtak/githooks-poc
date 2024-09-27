@@ -27,19 +27,19 @@ remote_branch=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null
 
 if [ -z "$remote_branch" ]; then
   echo -e "${BOLD}${YELLOW}\nNo upstream branch found. Is this a new branch?${RESET}"
-  echo -e "${CYAN}\nPushing changes...${RESET}\n"
+  echo -e "${CYAN}\nContinuing...${RESET}\n"
   exit 0
 fi
 
 echo -e "${MAGENTA}Checking for committed files...${RESET}"
 
 # Get the list of files that differ between the local branch and the remote branch
-committed_files=$(git diff --name-only "$remote_branch" HEAD | grep -E '\.(js|ts|json|css|html|md)$')
+committed_files=$(git diff --name-only "$remote_branch" HEAD | grep -E '\.(js|jsx|ts|tsx|json|css|scss|html|md)$')
 
 # If no relevant files are found, skip the check
 if [ -z "$committed_files" ]; then
   echo -e "${BOLD}${YELLOW}No relevant files to check for formatting.${RESET}"
-  echo -e "${CYAN}Pushing changes...${RESET}\n"
+  echo -e "${CYAN}Continuing...${RESET}\n"
   exit 0
 fi
 
@@ -71,7 +71,7 @@ if [ $prettier_status -ne 0 ]; then
   fi
 else
   echo -e "${GREEN}Committed files are formatted correctly.${RESET}"
-  echo -e "${CYAN}Pushing changes...${RESET}\n"
+  echo -e "${CYAN}Continuing...${RESET}\n"
 fi
 
 # If everything is fine or user allows, continue with the push

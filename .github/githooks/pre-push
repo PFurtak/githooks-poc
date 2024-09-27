@@ -1,4 +1,9 @@
 #!/bin/bash
 
+set -e
+
 ./.github/githooks/scripts/check-formatting
 ./.github/githooks/scripts/check-lint
+
+echo "All checks passed, pushing changes..."
+exit 0
