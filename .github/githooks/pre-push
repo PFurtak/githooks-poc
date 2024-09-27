@@ -1,3 +1,4 @@
 #!/bin/bash
 
 ./.github/githooks/scripts/check-formatting
+./.github/githooks/scripts/check-lint
