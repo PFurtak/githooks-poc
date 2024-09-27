@@ -20,7 +20,7 @@ if ! ng lint --help > /dev/null 2>&1; then
   exit 1
 fi
 
-echo -e "${MAGENTA}Checking against remote for changed files...${RESET}"
+echo -e "${MAGENTA}Checking changed files...${RESET}"
 
 # Find the branch you're pushing to
 remote_branch=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null)
@@ -50,7 +50,7 @@ lint_status=$?
 
 # If linter found issues, prompt the user
 if [ $lint_status -ne 0 ]; then
-  echo -e "\n${BOLD}${RED}Angular eslint has detected linting issues.${RESET}\n"
+  echo -e "\n${BOLD}${RED}ESlint has detected issues.${RESET}\n"
   echo -e "${YELLOW}Would you like to proceed with the push? (y/n)${RESET}"
 
   # Read user input and store the result
@@ -67,7 +67,7 @@ if [ $lint_status -ne 0 ]; then
     echo -e "${BOLD}${RED}Push aborted. Please fix the lint errors and try again.${RESET}"
     exit 1
   else
-    echo -e "${YELLOW}Proceeding with the push despite lint issues.${RESET}"
+    echo -e "${YELLOW}Proceeding despite lint issues.${RESET}"
   fi
 else
   echo -e "${GREEN}Committed files pass lint standards.${RESET}"

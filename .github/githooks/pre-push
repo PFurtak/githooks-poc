@@ -1,9 +1,14 @@
 #!/bin/bash
 
+# Color codes
+GREEN='\033[32m'
+BOLD='\033[1m'
+RESET='\033[0m'
+
 set -e
 
 ./.github/githooks/scripts/check-formatting
 ./.github/githooks/scripts/check-lint
 
-echo "All checks passed, pushing changes..."
+echo -e "${GREEN}${BOLD}\nAll checks passed, pushing changes...${RESET}"
 exit 0

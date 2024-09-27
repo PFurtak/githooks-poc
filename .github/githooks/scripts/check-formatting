@@ -20,7 +20,7 @@ if ! npx --no-install prettier --help > /dev/null 2>&1; then
   exit 1
 fi
 
-echo -e "${MAGENTA}Checking against remote for changed files...${RESET}"
+echo -e "${MAGENTA}Checking changed files...${RESET}"
 
 # Find the branch you're pushing to
 remote_branch=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null)
@@ -67,7 +67,7 @@ if [ $prettier_status -ne 0 ]; then
     echo -e "${BOLD}${RED}Push aborted. Please format your code and try again.${RESET}"
     exit 1
   else
-    echo -e "${YELLOW}Proceeding with the push despite formatting issues.${RESET}"
+    echo -e "${YELLOW}Proceeding despite formatting issues.${RESET}"
   fi
 else
   echo -e "${GREEN}Committed files are formatted correctly.${RESET}"
