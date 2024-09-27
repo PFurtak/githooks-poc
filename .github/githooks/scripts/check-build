@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# Color codes
+RED='\033[31m'
+GREEN='\033[32m'
+YELLOW='\033[33m'
+MAGENTA='\033[35m'
+BOLD='\033[1m'
+RESET='\033[0m'
+
+#!/bin/bash
+set -e
+
+echo -e "${BOLD}${YELLOW}\n*** [ Pre-push Hook Initialized - Building ] ***${RESET}\n"
+
+echo -e "${MAGENTA}\nRunning Angular build (fast configuration)...${RESET}"
+
+# Run the Angular build with the fast configuration
+npx ng build --configuration=fast
+
+if [ $? -ne 0 ]; then
+  echo - "${RED}${BOLD}\nAngular build failed. Aborting push.${RESET}"
+  exit 1
+fi
+
+echo "${GREEN}${BOLD}\nAngular build successful!${RESET}"
+
+# Clean up the dist folder
+echo "🧹 Cleaning up build artifacts..."
+rm -rf ./dist

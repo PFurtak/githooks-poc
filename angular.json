@@ -33,6 +33,13 @@
             "scripts": []
           },
           "configurations": {
+            "fast": {
+              "optimization": false,
+              "aot": false,
+              "sourceMap": false,
+              "namedChunks": true,
+              "extractLicenses": false
+            },
             "production": {
               "budgets": [
                 {

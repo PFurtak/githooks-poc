@@ -9,6 +9,7 @@ set -e
 
 ./.github/githooks/scripts/check-formatting
 ./.github/githooks/scripts/check-lint
+./.github/githooks/scripts/check-build
 
 echo -e "${GREEN}${BOLD}\nAll checks passed, pushing changes...${RESET}"
 exit 0
