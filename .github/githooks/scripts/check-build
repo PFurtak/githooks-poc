@@ -1,0 +1,48 @@
+#!/bin/bash
+
+# Color codes
+RED='\033[31m'
+GREEN='\033[32m'
+YELLOW='\033[33m'
+MAGENTA='\033[35m'
+BOLD='\033[1m'
+RESET='\033[0m'
+
+set -e
+
+echo -e "${BOLD}${YELLOW}\n*** [ Pre-push Hook Initialized - Building ] ***${RESET}\n"
+
+echo -e "${MAGENTA}\nRunning Angular build (fast configuration)...${RESET}"
+
+# Run the Angular build with the fast configuration
+npx ng build --configuration=fast
+
+# If Build fails, prompt the user
+if [ $? -ne 0 ]; then
+  echo -e "\n${BOLD}${RED}Angular build failed.${RESET}\n"
+  echo -e "${YELLOW}Would you like to proceed with the push? (y/n)${RESET}"
+
+  # Read user input and store the result
+  read -p "(y/n)?: " proceed < /dev/tty
+
+   # While loop to ensure valid input
+  while [[ "$proceed" != "y" && "$proceed" != "n" ]]; do
+    echo -e "${YELLOW}Invalid input, please enter 'y' or 'n'.${RESET}"
+    read -p "(y/n)?: " proceed < /dev/tty
+  done
+    # If the user says no, abort the push
+  if [[ "$proceed" != "y" ]]; then
+    echo -e "${BOLD}${RED}Push aborted. Please fix issues and try again.${RESET}"
+    exit 1
+  else
+    echo -e "${YELLOW}Proceeding despite failure to build.${RESET}"
+  fi
+else
+  echo -e "${GREEN}${BOLD}\nAngular build successful!${RESET}"
+fi
+
+
+
+# Clean up the dist folder
+echo "🧹 Cleaning up build artifacts..."
+rm -rf ./dist
