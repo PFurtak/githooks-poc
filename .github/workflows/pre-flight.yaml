@@ -10,6 +10,8 @@ jobs:
         uses: actions/setup-node@v4
       - name: Install NPM Deps
         run: npm i
+      - name: Formatting
+        run: npx prettier --check .
       - name: Lint
         run: npm run lint
       - name: Angular Unit Tests
