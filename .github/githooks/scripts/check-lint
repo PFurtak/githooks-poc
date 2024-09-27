@@ -43,9 +43,9 @@ if [ -z "$committed_files" ]; then
   exit 0
 fi
 
-echo -e "${MAGENTA}Running 'ng lint --lint-file-patterns' against committed changes...${RESET}\n"
+echo -e "${MAGENTA}Running eslint against committed changes...${RESET}\n"
 # Run lint check on committed files only
-ng lint --files $committed_files
+echo "$committed_files" | xargs npx eslint
 lint_status=$?
 
 # If linter found issues, prompt the user
