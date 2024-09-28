@@ -20,32 +20,9 @@ if ! npx --no-install prettier --help > /dev/null 2>&1; then
   exit 1
 fi
 
-echo -e "${MAGENTA}Checking changed files...${RESET}"
-
-# Find the branch you're pushing to
-remote_branch=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null)
-
-if [ -z "$remote_branch" ]; then
-  echo -e "${BOLD}${YELLOW}\nNo upstream branch found. Is this a new branch?${RESET}"
-  echo -e "${CYAN}\nContinuing...${RESET}\n"
-  exit 0
-fi
-
-echo -e "${MAGENTA}Checking for committed files...${RESET}"
-
-# Get the list of files that differ between the local branch and the remote branch
-committed_files=$(git diff --name-only "$remote_branch" HEAD | grep -E '\.(js|jsx|ts|tsx|json|css|scss|html|md)$')
-
-# If no relevant files are found, skip the check
-if [ -z "$committed_files" ]; then
-  echo -e "${BOLD}${YELLOW}No relevant files to check for formatting.${RESET}"
-  echo -e "${CYAN}Continuing...${RESET}\n"
-  exit 0
-fi
-
-echo -e "${MAGENTA}Running 'prettier --check' against committed changes...${RESET}\n"
+echo -e "${MAGENTA}Running 'prettier --check .'...${RESET}\n"
 # Run Prettier check on committed files only
-npx prettier --check $committed_files
+npx prettier --check .
 prettier_status=$?
 
 # If Prettier found issues, prompt the user
